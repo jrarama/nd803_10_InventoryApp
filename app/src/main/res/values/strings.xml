@@ -11,11 +11,14 @@
     <string name="quantity_format" formatted="false">%.0f items</string>
     <string name="set_quantity">Enter number of items</string>
     <string name="sell_product_title_format" formatted="false">Sell %s</string>
+    <string name="add_product_title_format" formatted="false">Add %s</string>
+    <string name="order_product_title_format" formatted="false">Order %s</string>
     <string name="cancel">Cancel</string>
     <string name="sell_title">Sell</string>
     <string name="quantity_required">Quantity is required!</string>
     <string name="not_enough_stocks">Not enough stocks!</string>
     <string name="sell_notification_format" formatted="false">Successfully sold %d %s!</string>
+    <string name="add_notification_format" formatted="false">Successfully added %d %s!</string>
     <string name="label_product_name">Product Name</string>
     <string name="label_price">Price</string>
     <string name="label_initial_quantity">Initial Quantity</string>
@@ -30,4 +33,7 @@
     <string name="delete_confirmation_format" formatted="false">Are you sure you want to delete %s?</string>
     <string name="delete_confirmation">Delete Confirmation</string>
     <string name="deleted_product_notif" formatted="false">Successfully deleted product %s</string>
+    <string name="greater_than_zero">Amount to add should be greater than 0</string>
+    <string name="order_product_format" formatted="false">Hi Supplier,\n I want to order %.0f items of %s. \nThanks</string>
+    <string name="order_title">Send an order request</string>
 </resources>

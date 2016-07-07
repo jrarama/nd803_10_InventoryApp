@@ -116,7 +116,7 @@ public class ProductsActivity extends AppCompatActivity {
 
     private void showSellDialog(final Product product, final InnerButtonClickListener<Integer> onClickListener) {
         final EditText tvQuantity = new EditText(this);
-        tvQuantity.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        tvQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         final Activity activity = this;
 
@@ -174,28 +174,34 @@ public class ProductsActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Product product = data.getParcelableExtra(AddProductActivity.PRODUCT_KEY);
                 DbContract.ProductEntry.insert(db, product);
-
-                Log.d(TAG, product.toString());
-
                 Toast.makeText(this, String.format(getString(R.string.added_product_notif), product.getTitle()),
                         Toast.LENGTH_LONG).show();
 
-                loadProducts();
             }
         } else if(requestCode == VIEW_PRODUCT_CODE) {
+            Product product = data.getParcelableExtra(ProductDetailActivity.PRODUCT_KEY);
             if (resultCode == ProductDetailActivity.DELETE_CODE) {
-                Product product = data.getParcelableExtra(ProductDetailActivity.PRODUCT_KEY);
-
-                Log.d(TAG, "Deleting product " + product.getId() + " " + product.getTitle());
-
                 DbContract.ProductEntry.delete(db, product);
-
                 Toast.makeText(this, String.format(getString(R.string.deleted_product_notif), product.getTitle()),
                         Toast.LENGTH_LONG).show();
-
-                loadProducts();
+            } else if (resultCode == ProductDetailActivity.SELL_CODE) {
+                int amount = data.getIntExtra(ProductDetailActivity.AMOUNT_KEY, 0);
+                product.setQuantity(product.getQuantity() - amount);
+                DbContract.ProductEntry.update(db, product);
+                String msg = String.format(getString(R.string.sell_notification_format),
+                        amount, product.getTitle());
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            } else if (resultCode == ProductDetailActivity.ADD_CODE) {
+                int amount = data.getIntExtra(ProductDetailActivity.AMOUNT_KEY, 0);
+                product.setQuantity(product.getQuantity() + amount);
+                DbContract.ProductEntry.update(db, product);
+                String msg = String.format(getString(R.string.add_notification_format),
+                        amount, product.getTitle());
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
             }
         }
+
+        loadProducts();
     }
 
     private void addSample() {
