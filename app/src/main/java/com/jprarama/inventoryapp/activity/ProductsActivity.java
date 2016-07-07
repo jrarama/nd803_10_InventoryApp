@@ -3,12 +3,15 @@ package com.jprarama.inventoryapp.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -31,6 +34,7 @@ import static com.jprarama.inventoryapp.data.DbContract.ProductEntry;
 public class ProductsActivity extends AppCompatActivity {
 
     private static final String TAG = ProductsActivity.class.getName();
+    private static final int ADD_PRODUCT_CODE = 1;
     private DbHepler dbHepler;
     private SQLiteDatabase db;
 
@@ -91,7 +95,7 @@ public class ProductsActivity extends AppCompatActivity {
 
     private void showSellDialog(final Product product, final InnerButtonClickListener<Integer> onClickListener) {
         final EditText tvQuantity = new EditText(this);
-        tvQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
+        tvQuantity.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         final Activity activity = this;
 
@@ -123,6 +127,39 @@ public class ProductsActivity extends AppCompatActivity {
                 });
 
         builder.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                Intent intent = new Intent(this, AddProductActivity.class);
+                startActivityForResult(intent, ADD_PRODUCT_CODE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_PRODUCT_CODE) {
+            if (resultCode == RESULT_OK) {
+                Product product = data.getParcelableExtra(AddProductActivity.PRODUCT_KEY);
+                DbContract.ProductEntry.insert(db, product);
+
+                Toast.makeText(this, String.format(getString(R.string.added_product_notif), product.getTitle()),
+                        Toast.LENGTH_LONG).show();
+
+                loadProducts();
+            }
+        }
     }
 
     private void addSample() {

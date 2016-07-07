@@ -15,5 +15,12 @@
     <string name="sell_title">Sell</string>
     <string name="quantity_required">Quantity is required!</string>
     <string name="not_enough_stocks">Not enough stocks!</string>
-    <string name="sell_notification_format">Selling %d items of %s</string>
+    <string name="sell_notification_format" formatted="false">Successfully sold %d %s!</string>
+    <string name="label_product_name">Product Name</string>
+    <string name="label_price">Price</string>
+    <string name="label_initial_quantity">Initial Quantity</string>
+    <string name="save">Save</string>
+    <string name="price_is_required">Price is required!</string>
+    <string name="product_name_required">Product name is required!</string>
+    <string name="added_product_notif">Added new product named %s</string>
 </resources>
