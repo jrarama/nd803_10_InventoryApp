@@ -3,31 +3,19 @@ package com.jprarama.inventoryapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.jprarama.inventoryapp.data.DbAnotations.Column;
-import com.jprarama.inventoryapp.data.DbAnotations.Key;
-import com.jprarama.inventoryapp.data.DbAnotations.Table;
-import com.jprarama.inventoryapp.data.DbContract.ProductEntry;
-
 /**
  * Created by joshua on 6/7/16.
  */
-@Table(name = ProductEntry.TABLE_NAME)
 public class Product implements Parcelable {
 
-    @Key
-    @Column(name = ProductEntry._ID, type = "INTEGER")
-    private Integer id;
+    private int id;
 
-    @Column(name = ProductEntry.COLUMN_TITLE)
     private String title;
 
-    @Column(name = ProductEntry.COLUMN_IMAGE_PATH)
     private String imagePath;
 
-    @Column(name = ProductEntry.COLUMN_PRICE, type = "FLOAT")
     private float price;
 
-    @Column(name = ProductEntry.COLUMN_QUANTITY, type = "FLOAT")
     private float quantity;
 
     public Product() {
@@ -41,6 +29,7 @@ public class Product implements Parcelable {
     }
 
     protected Product(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         imagePath = in.readString();
         price = in.readFloat();
@@ -59,11 +48,25 @@ public class Product implements Parcelable {
         }
     };
 
-    public Integer getId() {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(imagePath);
+        parcel.writeFloat(price);
+        parcel.writeFloat(quantity);
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -108,18 +111,5 @@ public class Product implements Parcelable {
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(title);
-        parcel.writeString(imagePath);
-        parcel.writeFloat(price);
-        parcel.writeFloat(quantity);
     }
 }

@@ -17,12 +17,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AddProductActivity"
-            android:label="@string/add_product"
+        <activity
+            android:name=".activity.AddProductActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".activity.ProductsActivity">
-
-        </activity>
+            android:label="@string/add_product"
+            android:parentActivityName=".activity.ProductsActivity"></activity>
+        <activity android:name=".activity.ProductDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/product_detail"
+            android:parentActivityName=".activity.ProductsActivity"></activity>
     </application>
 
 </manifest>

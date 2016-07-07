@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,7 +22,6 @@ import android.widget.Toast;
 
 import com.jprarama.inventoryapp.R;
 import com.jprarama.inventoryapp.adapter.ProductsAdapter;
-import com.jprarama.inventoryapp.data.CursorHelper;
 import com.jprarama.inventoryapp.data.DbContract;
 import com.jprarama.inventoryapp.data.DbHepler;
 import com.jprarama.inventoryapp.model.Product;
@@ -35,6 +36,8 @@ public class ProductsActivity extends AppCompatActivity {
 
     private static final String TAG = ProductsActivity.class.getName();
     private static final int ADD_PRODUCT_CODE = 1;
+    private static final int VIEW_PRODUCT_CODE = 2;
+
     private DbHepler dbHepler;
     private SQLiteDatabase db;
 
@@ -63,10 +66,10 @@ public class ProductsActivity extends AppCompatActivity {
         tvNoResults.setVisibility(View.VISIBLE);
         tvNoResults.setText(getString(R.string.loading_products));
 
-        Cursor c = ProductEntry.getAll(db);
+        final Cursor cursor = ProductEntry.getAll(db);
 
         final Activity activity = this;
-        adapter = new ProductsAdapter(this, c, new InnerButtonClickListener<Product>() {
+        adapter = new ProductsAdapter(this, cursor, new InnerButtonClickListener<Product>() {
             @Override
             public void onClicked(View view, final Product product) {
                 showSellDialog(product, new InnerButtonClickListener<Integer>() {
@@ -84,8 +87,26 @@ public class ProductsActivity extends AppCompatActivity {
             }
         });
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                cursor.moveToPosition(position);
+                try {
+                    int pid = cursor.getInt(cursor.getColumnIndexOrThrow(BaseColumns._ID));
+                    Log.d(TAG, "PID: " + pid);
+                    Product product = ProductEntry.getItem(cursor);
+                    Intent intent = new Intent(activity, ProductDetailActivity.class);
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.putExtra(ProductDetailActivity.PRODUCT_KEY, product);
+                    startActivityForResult(intent, VIEW_PRODUCT_CODE);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+                //Toast.makeText(activity, "Selected position: " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        int count = c.getCount();
+        int count = cursor.getCount();
         if (count == 0) {
             tvNoResults.setText(getString(R.string.no_products));
         } else {
@@ -154,7 +175,22 @@ public class ProductsActivity extends AppCompatActivity {
                 Product product = data.getParcelableExtra(AddProductActivity.PRODUCT_KEY);
                 DbContract.ProductEntry.insert(db, product);
 
+                Log.d(TAG, product.toString());
+
                 Toast.makeText(this, String.format(getString(R.string.added_product_notif), product.getTitle()),
+                        Toast.LENGTH_LONG).show();
+
+                loadProducts();
+            }
+        } else if(requestCode == VIEW_PRODUCT_CODE) {
+            if (resultCode == ProductDetailActivity.DELETE_CODE) {
+                Product product = data.getParcelableExtra(ProductDetailActivity.PRODUCT_KEY);
+
+                Log.d(TAG, "Deleting product " + product.getId() + " " + product.getTitle());
+
+                DbContract.ProductEntry.delete(db, product);
+
+                Toast.makeText(this, String.format(getString(R.string.deleted_product_notif), product.getTitle()),
                         Toast.LENGTH_LONG).show();
 
                 loadProducts();
@@ -169,11 +205,10 @@ public class ProductsActivity extends AppCompatActivity {
 
         Log.d(TAG, "Getting products");
         Cursor c = ProductEntry.getAll(db);
-        CursorHelper helper = new CursorHelper(Product.class);
         if (c.moveToFirst()) {
             do {
                 try {
-                    Product p = helper.getItem(c, null);
+                    Product p = ProductEntry.getItem(c);
                     Log.d(TAG, p.toString());
                 } catch (Exception e) {
                     Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();

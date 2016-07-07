@@ -44,6 +44,8 @@
     </RelativeLayout>
     <Button
         android:id="@+id/btnSell"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/textPadding"
         android:text="@string/sell_product"

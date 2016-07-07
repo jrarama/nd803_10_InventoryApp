@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jprarama.inventoryapp.R;
-import com.jprarama.inventoryapp.data.CursorHelper;
+import com.jprarama.inventoryapp.data.DbContract;
 import com.jprarama.inventoryapp.model.Product;
 import com.jprarama.inventoryapp.util.InnerButtonClickListener;
 
@@ -24,7 +24,6 @@ public class ProductsAdapter extends CursorAdapter {
     private static final String TAG = ProductsAdapter.class.getName();
 
     private static class ViewHolder {
-        CursorHelper helper;
         TextView tvTitle;
         TextView tvPrice;
         TextView tvQuantity;
@@ -49,7 +48,6 @@ public class ProductsAdapter extends CursorAdapter {
         viewHolder.tvTitle = (TextView) view.findViewById(R.id.tvTitle);
         viewHolder.btnSell = (Button) view.findViewById(R.id.btnSell);
         viewHolder.btnSell.setTag(cursor.getPosition());
-        viewHolder.helper = new CursorHelper(Product.class);
         view.setTag(viewHolder);
 
         viewHolder.btnSell.setOnClickListener(new View.OnClickListener() {
@@ -58,12 +56,8 @@ public class ProductsAdapter extends CursorAdapter {
                 int position = (int) view.getTag();
                 cursor.moveToPosition(position);
                 Log.d(TAG, "Button clicked: " + position);
-                try {
-                    Product p = viewHolder.helper.getItem(cursor, null);
-                    buttonClickListener.onClicked(view, p);
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                }
+                Product p = DbContract.ProductEntry.getItem(cursor);
+                buttonClickListener.onClicked(view, p);
             }
         });
 
@@ -73,13 +67,7 @@ public class ProductsAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        Product product;
-        try {
-            product = viewHolder.helper.getItem(cursor, null);
-        } catch (Exception e) {
-            Log.d(TAG, e.toString());
-            return;
-        }
+        Product product = DbContract.ProductEntry.getItem(cursor);
         viewHolder.tvPrice.setText(String.format(context.getString(R.string.price_format),
                 product.getPrice()));
         viewHolder.tvTitle.setText(product.getTitle());

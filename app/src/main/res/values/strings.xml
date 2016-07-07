@@ -23,4 +23,11 @@
     <string name="price_is_required">Price is required!</string>
     <string name="product_name_required">Product name is required!</string>
     <string name="added_product_notif">Added new product named %s</string>
+    <string name="order">Order</string>
+    <string name="add">Add</string>
+    <string name="product_detail">Product Detail</string>
+    <string name="delete">Delete</string>
+    <string name="delete_confirmation_format" formatted="false">Are you sure you want to delete %s?</string>
+    <string name="delete_confirmation">Delete Confirmation</string>
+    <string name="deleted_product_notif" formatted="false">Successfully deleted product %s</string>
 </resources>
