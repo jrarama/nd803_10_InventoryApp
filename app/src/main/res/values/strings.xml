@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Inventory App</string>
+    <string name="no_products">No products available.</string>
+    <string name="loading_products">Loading products...</string>
+    <string name="add_product">Add Product</string>
+    <string name="sell_product">Sell</string>
+    <string name="dummy_product_name">Sample Product Name</string>
+    <string name="dummy_quantity">100 items</string>
+    <string name="dummy_price">$ 150.00</string>
+    <string name="price_format" formatted="false">$ %.2f</string>
+    <string name="quantity_format" formatted="false">%.0f items</string>
+    <string name="set_quantity">Enter number of items</string>
+    <string name="sell_product_title_format" formatted="false">Sell %s</string>
+    <string name="cancel">Cancel</string>
+    <string name="sell_title">Sell</string>
+    <string name="quantity_required">Quantity is required!</string>
+    <string name="not_enough_stocks">Not enough stocks!</string>
+    <string name="sell_notification_format">Selling %d items of %s</string>
+</resources>

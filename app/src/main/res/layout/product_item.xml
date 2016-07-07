@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:padding="@dimen/textPadding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/productThumb"
+        android:layout_height="@dimen/productThumb" />
+
+    <RelativeLayout
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/textPadding"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:text="@string/dummy_product_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvQuantity"
+            android:layout_below="@+id/tvTitle"
+            android:text="@string/dummy_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_below="@+id/tvTitle"
+            android:layout_alignParentRight="true"
+            android:text="@string/dummy_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btnSell"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/textPadding"
+        android:text="@string/sell_product"
+        android:layout_width="@dimen/sell_button_width"
+        android:layout_height="wrap_content" />
+</LinearLayout>
