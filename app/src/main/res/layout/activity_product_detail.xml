@@ -22,6 +22,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_gravity="center"
+                style="@style/DefaultImage"
                 android:layout_margin="@dimen/imageMargin"
                 android:background="@color/colorImage"
                 android:layout_width="@dimen/imageSize"
@@ -33,6 +34,7 @@
 
                 <TextView
                     android:id="@+id/tvTitle"
+                    android:textStyle="bold"
                     android:hint="@string/dummy_product_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

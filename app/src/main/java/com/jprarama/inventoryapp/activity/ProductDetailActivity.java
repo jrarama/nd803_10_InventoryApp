@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -20,6 +23,10 @@ import android.widget.Toast;
 import com.jprarama.inventoryapp.R;
 import com.jprarama.inventoryapp.model.Product;
 import com.jprarama.inventoryapp.util.InnerButtonClickListener;
+import com.jprarama.inventoryapp.util.Utilities;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -89,7 +96,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +112,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 });
             }
         });
+
         handleIntent(getIntent());
     }
 
@@ -125,6 +132,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             tvTitle.setText(product.getTitle());
             tvQuantity.setText(String.format(getString(R.string.quantity_format),
                     product.getQuantity()));
+
+            Utilities.setImageFromPath(this, imageView, product.getImagePath());
         }
     }
 

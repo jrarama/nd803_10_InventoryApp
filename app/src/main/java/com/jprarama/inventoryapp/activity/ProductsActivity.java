@@ -58,7 +58,6 @@ public class ProductsActivity extends AppCompatActivity {
 
         Log.d(TAG, "Getting products");
 
-
         loadProducts();
     }
 
@@ -102,7 +101,6 @@ public class ProductsActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
-                //Toast.makeText(activity, "Selected position: " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -170,16 +168,15 @@ public class ProductsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ADD_PRODUCT_CODE) {
-            if (resultCode == RESULT_OK) {
-                Product product = data.getParcelableExtra(AddProductActivity.PRODUCT_KEY);
-                DbContract.ProductEntry.insert(db, product);
-                Toast.makeText(this, String.format(getString(R.string.added_product_notif), product.getTitle()),
-                        Toast.LENGTH_LONG).show();
+        if (requestCode == ADD_PRODUCT_CODE && resultCode == RESULT_OK) {
+            Product product = data.getParcelableExtra(AddProductActivity.PRODUCT_KEY);
+            DbContract.ProductEntry.insert(db, product);
+            Toast.makeText(this, String.format(getString(R.string.added_product_notif), product.getTitle()),
+                    Toast.LENGTH_LONG).show();
 
-            }
-        } else if(requestCode == VIEW_PRODUCT_CODE) {
+        } else if(requestCode == VIEW_PRODUCT_CODE && data != null) {
             Product product = data.getParcelableExtra(ProductDetailActivity.PRODUCT_KEY);
+
             if (resultCode == ProductDetailActivity.DELETE_CODE) {
                 DbContract.ProductEntry.delete(db, product);
                 Toast.makeText(this, String.format(getString(R.string.deleted_product_notif), product.getTitle()),
@@ -204,23 +201,4 @@ public class ProductsActivity extends AppCompatActivity {
         loadProducts();
     }
 
-    private void addSample() {
-        Log.d(TAG, "Inserting products");
-        ProductEntry.insert(db, new Product("Apple", "some/path", 100f, 20));
-        ProductEntry.insert(db, new Product("Mango", "some/path2", 200f, 30));
-
-        Log.d(TAG, "Getting products");
-        Cursor c = ProductEntry.getAll(db);
-        if (c.moveToFirst()) {
-            do {
-                try {
-                    Product p = ProductEntry.getItem(c);
-                    Log.d(TAG, p.toString());
-                } catch (Exception e) {
-                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    break;
-                }
-            } while (c.moveToNext());
-        }
-    }
 }

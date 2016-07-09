@@ -7,7 +7,9 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        style="@style/DefaultImage"
         android:id="@+id/imageView"
+        android:scaleType="centerCrop"
         android:layout_width="@dimen/productThumb"
         android:layout_height="@dimen/productThumb" />
 

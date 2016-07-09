@@ -16,6 +16,7 @@ import com.jprarama.inventoryapp.R;
 import com.jprarama.inventoryapp.data.DbContract;
 import com.jprarama.inventoryapp.model.Product;
 import com.jprarama.inventoryapp.util.InnerButtonClickListener;
+import com.jprarama.inventoryapp.util.Utilities;
 
 /**
  * Created by joshua on 7/7/16.
@@ -73,6 +74,7 @@ public class ProductsAdapter extends CursorAdapter {
         viewHolder.tvTitle.setText(product.getTitle());
         viewHolder.tvQuantity.setText(String.format(context.getString(R.string.quantity_format),
                 product.getQuantity()));
+        Utilities.setImageFromPath(context, viewHolder.image, product.getImagePath());
 
     }
 }
